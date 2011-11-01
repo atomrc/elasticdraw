@@ -101,7 +101,7 @@ Elastic.prototype = {
 	},
 
 	isStable:function() {
-		var seuil = 0.00001;
+		var seuil = 0.00008;
 		var compVect = this.strengthVector.getAddedVector(gravity);
 		return Math.pow(compVect.dx, 2) < seuil && Math.pow(compVect.dy, 2) < seuil;
 	},
@@ -151,10 +151,25 @@ Pen.prototype = {
 
 	drawInContext:function(context) {
 		var center = this.getCenter();
+		var radius = Math.floor(this.size/2);
+		var delta = radius + Math.floor(this.size /2);
+		var deltaY = (delta)*sin_pi3;
+		var deltaX = (delta)*cos_pi3;
 		context.save();
+		context.fillStyle = "orange";
+		context.beginPath();
+		context.moveTo(center.x - delta, center.y);
+		context.lineTo(center.x - deltaX, center.y - deltaY);
+		context.lineTo(center.x + deltaX, center.y - deltaY);
+		context.lineTo(center.x + delta, center.y);
+		context.lineTo(center.x + deltaX, center.y + deltaY);
+		context.lineTo(center.x - deltaX, center.y + deltaY);
+		context.closePath();
+		context.fill();
+
 		context.fillStyle = this.color;
 		context.beginPath();
-		context.arc(center.x, center.y, Math.floor(this.size/2), PI_2, 0);
+		context.arc(center.x, center.y, radius, PI_2, 0);
 		context.fill();
 		context.restore();
 	},

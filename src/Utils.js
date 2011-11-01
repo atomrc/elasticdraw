@@ -1,6 +1,9 @@
 /****************************************** 
 	MATH / GRAPHICS 
 ******************************************/
+var cos_pi3 = 0.5;
+var sin_pi3 = Math.sin(Math.PI/3);
+
 
 function GPoint(x, y) {
 	this.x = x;

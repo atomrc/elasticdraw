@@ -82,7 +82,32 @@ function initWelcomeScreenConfig() {
 	ela2.isStable = function() { return false; };
 	welcomePensConfig.push(ela2);
 
-	var penColor = "#ff3300";
+	var elaImage = new Image();
+	elaImage.src = "images/elasticDraw.png";
+
+	var elaLogo = new Pen(new GPoint(350, 0), "transparent");
+	elaLogo.drawInContext = (function(context) {
+		var x = this.position.x - Math.floor(elaImage.width/2);
+		context.drawImage(elaImage, x, this.position.y);
+	}).bind(elaLogo);
+	var ela3 = new Elastic(60, new GPoint(350, 200), elaLogo);
+	ela3.isStable = function() { return false; };
+	welcomePensConfig.push(ela3);
+	var penColor = "#4D90FE";
+
+	var nbPens = 11;
+	var width = 570;
+	var step = width/(nbPens + 1);
+	var startingX = 100;
+	for(var i=0; i < nbPens; i++) {
+		var x = startingX + i*step;
+		var backPen = new Pen(new GPoint(x, 350), penColor);
+		backPen.size = 30;
+		backPen.continuousLines = false;
+		backPen.color = '#'+Math.floor(Math.random()*16777215).toString(16);
+		var backEla = new Elastic(20, new GPoint(x, 300), backPen);
+		welcomePensConfig.push(backEla);
+	}
 
 	var startX = 350;
 	var startY = 700;
@@ -104,6 +129,7 @@ function initWelcomeScreenConfig() {
 	var underLine = new Pen(new GPoint(100, underLineStart + 10), penColor);
 	var underEla = new Elastic(25, new GPoint(350, underLineStart), underLine);
 	welcomePensConfig.push(underEla);
+
 
 }	
 /****************************************** 
@@ -209,7 +235,7 @@ Elastic.prototype = {
 	},
 
 	isStable:function() {
-		var seuil = 0.00001;
+		var seuil = 0.00008;
 		var compVect = this.strengthVector.getAddedVector(gravity);
 		return Math.pow(compVect.dx, 2) < seuil && Math.pow(compVect.dy, 2) < seuil;
 	},
@@ -259,10 +285,25 @@ Pen.prototype = {
 
 	drawInContext:function(context) {
 		var center = this.getCenter();
+		var radius = Math.floor(this.size/2);
+		var delta = radius + Math.floor(this.size /2);
+		var deltaY = (delta)*sin_pi3;
+		var deltaX = (delta)*cos_pi3;
 		context.save();
+		context.fillStyle = "orange";
+		context.beginPath();
+		context.moveTo(center.x - delta, center.y);
+		context.lineTo(center.x - deltaX, center.y - deltaY);
+		context.lineTo(center.x + deltaX, center.y - deltaY);
+		context.lineTo(center.x + delta, center.y);
+		context.lineTo(center.x + deltaX, center.y + deltaY);
+		context.lineTo(center.x - deltaX, center.y + deltaY);
+		context.closePath();
+		context.fill();
+
 		context.fillStyle = this.color;
 		context.beginPath();
-		context.arc(center.x, center.y, Math.floor(this.size/2), PI_2, 0);
+		context.arc(center.x, center.y, radius, PI_2, 0);
 		context.fill();
 		context.restore();
 	},
@@ -424,6 +465,10 @@ DrawingController.prototype = {
 		}
 	},
 
+	exportImage:function() {
+		window.location = this.context.canvas.toDataURL('image/png');
+	},
+
 	clear:function() {
 		var context = this.context;
 		this.arrayOfPaths = [];
@@ -442,8 +487,11 @@ ConfigPanelController.prototype = {
 	colorInput:null,
 	widthInput:null,
 	hidingPanel:null,
-
+	instructions:null,
+	
 	init:function() {
+		this.instructions = document.getElementById("panelInstructions");
+
 		//the panel that hide the toolbox
 		var hidingPanel = document.createElement("div");
 		hidingPanel.className = "hidingPanel close";
@@ -506,10 +554,12 @@ ConfigPanelController.prototype = {
 
 	open:function() {
 		this.hidingPanel.className = "hidingPanel open";
+		this.instructions.style.display = "block";
 	},
 
 	close:function() {
 		this.hidingPanel.className = "hidingPanel close";
+		this.instructions.style.display = "none";
 	},
 	
 	//Event listeners
@@ -648,6 +698,7 @@ AddPenState.prototype = {
 	context:null,
 	elastic:null,
 	infoDiv:null,
+	instructionsDiv:null,
 	orderedStatesClasses:[EditMenuState, ChooseAnchorState, ChooseSizeState, ChoosePenState],
 	currentState:0, //define the current state of the application
 
@@ -655,9 +706,9 @@ AddPenState.prototype = {
 	init:function() {
 		this.currentState = 0;
 		this.infoDiv.style.display = "block";
-
+		this.instructionsDiv = document.getElementById("instructions");
 		this.context.font = "20pt Arial";
-
+		
 		var pen = new Pen(new GPoint(-100, -100), "#C0C0C0");
 		this.elastic = new Elastic(0, new  GPoint(-100, -100), pen);
 	
@@ -712,7 +763,7 @@ AddPenState.prototype = {
 			this.state = new this.orderedStatesClasses[this.currentState]();
 			this.state.elastic = this.elastic;
 			this.state.controller = this;
-			this.state.printInformations(this.infoDiv);
+			this.state.printInformations(this.instructionsDiv);
 			this.currentState++;
 		} else {
 			this.addPen();
@@ -757,7 +808,7 @@ AddingState.prototype = {
 }
 
 function EditMenuState(){
-	this.textualValue = "<p>Click anywhere to add a new pen</p><p>press (esc) to quit the editing mode and run the animation</p>";
+	this.textualValue = "<p>Click anywhere to add a new pencil</p><p>press (esc) to quit the editing mode and run the animation</p>";
 }
 EditMenuState.prototype.__proto__ = AddingState.prototype;
 
@@ -801,7 +852,7 @@ ChooseSizeState.prototype.updateParameters = function() {
 }
 
 function ChoosePenState() {
-	this.textualValue = "Choose the starting point of the pen";
+	this.textualValue = "Choose the starting point of the pencil";
 }
 ChoosePenState.prototype.__proto__ = AddingState.prototype
 ChoosePenState.prototype.onMouseMove = function(event, context) {
@@ -816,6 +867,9 @@ ChoosePenState.prototype.onMouseMove = function(event, context) {
 /****************************************** 
 	MATH / GRAPHICS 
 ******************************************/
+var cos_pi3 = 0.5;
+var sin_pi3 = Math.sin(Math.PI/3);
+
 
 function GPoint(x, y) {
 	this.x = x;

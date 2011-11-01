@@ -9,6 +9,7 @@
 	<body>
 		<div id="mainContainer">
 			<div id="configPanelDiv">
+				<div id="panelInstructions">Here you can choose the settings of the pencil</div>
 			</div>
 			<div id="animationDiv">
 				<canvas id="drawingCanvas" height="700px" width="700px">
@@ -16,6 +17,8 @@
 				<canvas id="penCanvas" height="700px" width="700px">
 				</canvas>
 				<div id="addingInfos">
+					<div id="instructions">
+					</div>
 				</div>
 				<canvas id="mainMenuCanvas" height="700px" width="700px">
 				</canvas>
@@ -23,11 +26,11 @@
 				</canvas>
 				<div id="mainMenu">
 					<p>and</p>
-					<button id="startButton" onclick="statesController.setAddPenState();">Start new draw</button>
+					<button id="startButton" onclick="statesController.setAddPenState();">Start drawing</button>
 				</div>
 
 			</div>
-			<button id="exportButton" onclick="animationController.exportImage()">Export Image</button>
+			<button id="exportButton" onclick="drawingController.exportImage()">Export Image</button>
 		</div>
 	</body>
 </html>

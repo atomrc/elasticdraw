@@ -115,6 +115,7 @@ AddPenState.prototype = {
 	context:null,
 	elastic:null,
 	infoDiv:null,
+	instructionsDiv:null,
 	orderedStatesClasses:[EditMenuState, ChooseAnchorState, ChooseSizeState, ChoosePenState],
 	currentState:0, //define the current state of the application
 
@@ -122,9 +123,9 @@ AddPenState.prototype = {
 	init:function() {
 		this.currentState = 0;
 		this.infoDiv.style.display = "block";
-
+		this.instructionsDiv = document.getElementById("instructions");
 		this.context.font = "20pt Arial";
-
+		
 		var pen = new Pen(new GPoint(-100, -100), "#C0C0C0");
 		this.elastic = new Elastic(0, new  GPoint(-100, -100), pen);
 	
@@ -179,7 +180,7 @@ AddPenState.prototype = {
 			this.state = new this.orderedStatesClasses[this.currentState]();
 			this.state.elastic = this.elastic;
 			this.state.controller = this;
-			this.state.printInformations(this.infoDiv);
+			this.state.printInformations(this.instructionsDiv);
 			this.currentState++;
 		} else {
 			this.addPen();
@@ -224,7 +225,7 @@ AddingState.prototype = {
 }
 
 function EditMenuState(){
-	this.textualValue = "<p>Click anywhere to add a new pen</p><p>press (esc) to quit the editing mode and run the animation</p>";
+	this.textualValue = "<p>Click anywhere to add a new pencil</p><p>press (esc) to quit the editing mode and run the animation</p>";
 }
 EditMenuState.prototype.__proto__ = AddingState.prototype;
 
@@ -268,7 +269,7 @@ ChooseSizeState.prototype.updateParameters = function() {
 }
 
 function ChoosePenState() {
-	this.textualValue = "Choose the starting point of the pen";
+	this.textualValue = "Choose the starting point of the pencil";
 }
 ChoosePenState.prototype.__proto__ = AddingState.prototype
 ChoosePenState.prototype.onMouseMove = function(event, context) {

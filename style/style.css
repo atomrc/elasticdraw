@@ -1,14 +1,17 @@
 body, .hidingPanel{
 	background:black;
+	font-family:"Arial";
 }
 #mainContainer {
 	margin:auto;
 	width:700px;
 }
 
+button, #instructions, #panelInstructions {
+	background-color: #4D90FE;
+}
 button {
 	border: 1px solid #3079ED;
-	background-color: #4D90FE;
 	font-size:20pt;
 	color:white;
 	cursor:pointer;
@@ -40,18 +43,31 @@ button#startButton {
 
 #addingInfos {
 	background:rgba(0, 0, 0, 0.4);
+}
+#panelInstructions, #instructions {
+	position:absolute;
 	color:white;
+	width:100px;
+	padding:5px;
+	text-align:left;
+	border-radius:5px;
+}
+#instructions {
+	left:100%;
+}
+#panelInstructions {
+	right:100%;
+	top:0;
 }
 
-#mainMenu, #addingInfos {
+#mainMenu, #addingInfos, #panelInstructions {
 	display:none;
 	text-align:center;
-	font-family:"Arial";
-	font-size:20pt;
 }
 
 #mainMenu p:first-child {
 	padding-top:70px;
+	font-size:20pt;
 }
 
 .hidingPanel {

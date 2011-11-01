@@ -132,6 +132,10 @@ DrawingController.prototype = {
 		}
 	},
 
+	exportImage:function() {
+		window.location = this.context.canvas.toDataURL('image/png');
+	},
+
 	clear:function() {
 		var context = this.context;
 		this.arrayOfPaths = [];
@@ -150,8 +154,11 @@ ConfigPanelController.prototype = {
 	colorInput:null,
 	widthInput:null,
 	hidingPanel:null,
-
+	instructions:null,
+	
 	init:function() {
+		this.instructions = document.getElementById("panelInstructions");
+
 		//the panel that hide the toolbox
 		var hidingPanel = document.createElement("div");
 		hidingPanel.className = "hidingPanel close";
@@ -214,10 +221,12 @@ ConfigPanelController.prototype = {
 
 	open:function() {
 		this.hidingPanel.className = "hidingPanel open";
+		this.instructions.style.display = "block";
 	},
 
 	close:function() {
 		this.hidingPanel.className = "hidingPanel close";
+		this.instructions.style.display = "none";
 	},
 	
 	//Event listeners
