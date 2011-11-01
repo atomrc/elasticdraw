@@ -82,17 +82,6 @@ function initWelcomeScreenConfig() {
 	ela2.isStable = function() { return false; };
 	welcomePensConfig.push(ela2);
 
-	var elaImage = new Image();
-	elaImage.src = "images/elasticDraw.png";
-
-	var elaLogo = new Pen(new GPoint(350, 0), "transparent");
-	elaLogo.drawInContext = (function(context) {
-		var x = this.position.x - Math.floor(elaImage.width/2);
-		context.drawImage(elaImage, x, this.position.y);
-	}).bind(elaLogo);
-	var ela3 = new Elastic(60, new GPoint(350, 200), elaLogo);
-	ela3.isStable = function() { return false; };
-	welcomePensConfig.push(ela3);
 	var penColor = "#4D90FE";
 
 	var nbPens = 11;
@@ -109,6 +98,18 @@ function initWelcomeScreenConfig() {
 		welcomePensConfig.push(backEla);
 	}
 
+	var elaImage = new Image();
+	elaImage.src = "images/elasticDraw.png";
+
+	var elaLogo = new Pen(new GPoint(350, 0), "transparent");
+	elaLogo.drawInContext = (function(context) {
+		var x = this.position.x - Math.floor(elaImage.width/2);
+		context.drawImage(elaImage, x, this.position.y);
+	}).bind(elaLogo);
+	var ela3 = new Elastic(60, new GPoint(350, 200), elaLogo);
+	ela3.isStable = function() { return false; };
+	welcomePensConfig.push(ela3);
+	
 	var startX = 350;
 	var startY = 700;
 	var elaSize = 200;
@@ -158,7 +159,6 @@ Path.prototype = {
 		context.strokeStyle = this.color;
 		context.fillStyle = this.color;
 		context.lineWidth = this.width;
-		context.lineJoin = "round";
 		context.beginPath();
 		if(this.lines.length != 0) {
 			var firstLine = this.lines[0];
@@ -172,11 +172,13 @@ Path.prototype = {
 	},
 
 	drawContinuousLines:function(context) {
-		for(var li in this.lines) {
-			var line = this.lines[li];
-			context.lineTo(line.end.x, line.end.y);
+		if(this.lines.length >= 2) {
+			for(var li in this.lines) {
+				var line = this.lines[li];
+				context.lineTo(line.end.x, line.end.y);
+			}
+			context.stroke();
 		}
-		context.stroke();
 	},
 
 	drawDottedLines:function(context) {
@@ -339,7 +341,8 @@ Pen.prototype = {
  */
 function AnimationController(context, drawer) {
 	this.context = context;
-	this.context.capLine = "round";
+	context.lineJoin = "round";
+	context.lineCap = "round";
 	this.drawer = drawer;
 
 }
@@ -437,6 +440,8 @@ AnimationController.prototype = {
 /* The controller that draw the lines in the drawing context */
 function DrawingController(context) {
 	this.context = context;
+	context.lineJoin = "round";
+	context.lineCap = "round";
 }
 DrawingController.prototype = {
 	context:null,
@@ -492,7 +497,7 @@ ConfigPanelController.prototype = {
 	init:function() {
 		this.instructions = document.getElementById("panelInstructions");
 
-		//the panel that hide the toolbox
+		//the panel that hides the toolbox
 		var hidingPanel = document.createElement("div");
 		hidingPanel.className = "hidingPanel close";
 		this.context.appendChild(hidingPanel);
@@ -507,10 +512,10 @@ ConfigPanelController.prototype = {
 		var colorInput = document.createElement("input");
 		colorInput.className = "color {hash:true}";
 		colorInput.value = "#C0C0C0";
-		this.context.appendChild(colorInput);
+		colorInput.id = "colorPicker";
 		colorInput.onchange = this.colorDidChange.bind(this);
 		this.colorInput = colorInput;
-		
+
 		//widthpicker
 		var widthInput = document.createElement("select");
 		widthInput.name = "width";
@@ -521,8 +526,8 @@ ConfigPanelController.prototype = {
 			widthInput.appendChild(option);
 		}
 		widthInput.onchange = this.widthDidChange.bind(this);
-		this.context.appendChild(widthInput);
 		this.widthInput = widthInput;
+
 
 		//lineTypePicker
 		var lineInput = document.createElement("select");
@@ -531,18 +536,36 @@ ConfigPanelController.prototype = {
 		//continuous
 		var contopt = document.createElement("option");
 		contopt.value = "1";
+		contopt.innerHTML = "continuous";
 		contopt.className = "continousOption";
 		lineInput.appendChild(contopt);
 
 		//dotted
 		var dotopt = document.createElement("option");
 		dotopt.value = "0";
+		dotopt.innerHTML = "dotted";
 		dotopt.className = "dottedOption";
 		lineInput.appendChild(dotopt);
 
-		this.lineInput = lineInput;
 		lineInput.onchange = this.lineTypeDidChange.bind(this);
-		this.context.appendChild(lineInput);
+		this.lineInput = lineInput;
+
+		var sub1 = this.createSubPanel("Color");
+		var sub2 = this.createSubPanel("Size");
+		var sub3 = this.createSubPanel("Line type");
+		
+		sub1.appendChild(this.colorInput);
+		sub2.appendChild(this.widthInput);
+		sub3.appendChild(this.lineInput);
+	},
+
+	//create a new sub panel. The sub panel is automatically added to the context 
+	createSubPanel:function(title) {
+		var sub = document.createElement("div");
+		sub.className = "subPanel";
+		sub.innerHTML = title +"<br/>";
+		this.context.appendChild(sub);
+		return sub;
 	},
 
 	setPen:function(pen) {

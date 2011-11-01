@@ -4,8 +4,17 @@ body, .hidingPanel{
 }
 #mainContainer {
 	margin:auto;
-	width:700px;
+	width:1000px;
 }
+#configPanelDiv {
+	box-shadow: inset 3px 3px 3px 3px #888;
+	float:left;
+	background:white;
+	position:relative;
+	margin:10px 0;
+	padding:10px 0;
+}
+
 
 button, #instructions, #panelInstructions {
 	background-color: #4D90FE;
@@ -30,7 +39,7 @@ button#startButton {
 	margin:auto;
 	background:white;
 }
-#mainMenu, #mainMenuCanvas,  #addingInfos, #penCanvas, #addingCanvas {
+#mainMenu, #mainMenuCanvas, #drawingCanvas, #addingInfos, #penCanvas, #addingCanvas {
 	position:absolute;
 	top:0;
 	left:0;
@@ -70,6 +79,13 @@ button#startButton {
 	font-size:20pt;
 }
 
+#colorPicker {
+	border:1px solid black;
+	width:100px;
+}
+.subPanel {
+	padding:10px;
+}
 .hidingPanel {
 	position:absolute;
 	width:100%;
@@ -83,15 +99,9 @@ button#startButton {
 .close {
 	top:0;
 }
-#configPanelDiv {
-	background:white;
-	position:relative;
-	margin:10px 0;
-	padding:10px 0;
-}
-
 .continousOption, .dottedOption {
 	width:50px;
+	color:transparent;
 }
 
 .continousOption {

@@ -57,17 +57,6 @@ function initWelcomeScreenConfig() {
 	ela2.isStable = function() { return false; };
 	welcomePensConfig.push(ela2);
 
-	var elaImage = new Image();
-	elaImage.src = "images/elasticDraw.png";
-
-	var elaLogo = new Pen(new GPoint(350, 0), "transparent");
-	elaLogo.drawInContext = (function(context) {
-		var x = this.position.x - Math.floor(elaImage.width/2);
-		context.drawImage(elaImage, x, this.position.y);
-	}).bind(elaLogo);
-	var ela3 = new Elastic(60, new GPoint(350, 200), elaLogo);
-	ela3.isStable = function() { return false; };
-	welcomePensConfig.push(ela3);
 	var penColor = "#4D90FE";
 
 	var nbPens = 11;
@@ -84,6 +73,18 @@ function initWelcomeScreenConfig() {
 		welcomePensConfig.push(backEla);
 	}
 
+	var elaImage = new Image();
+	elaImage.src = "images/elasticDraw.png";
+
+	var elaLogo = new Pen(new GPoint(350, 0), "transparent");
+	elaLogo.drawInContext = (function(context) {
+		var x = this.position.x - Math.floor(elaImage.width/2);
+		context.drawImage(elaImage, x, this.position.y);
+	}).bind(elaLogo);
+	var ela3 = new Elastic(60, new GPoint(350, 200), elaLogo);
+	ela3.isStable = function() { return false; };
+	welcomePensConfig.push(ela3);
+	
 	var startX = 350;
 	var startY = 700;
 	var elaSize = 200;

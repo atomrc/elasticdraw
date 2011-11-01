@@ -24,7 +24,6 @@ Path.prototype = {
 		context.strokeStyle = this.color;
 		context.fillStyle = this.color;
 		context.lineWidth = this.width;
-		context.lineJoin = "round";
 		context.beginPath();
 		if(this.lines.length != 0) {
 			var firstLine = this.lines[0];
@@ -38,11 +37,13 @@ Path.prototype = {
 	},
 
 	drawContinuousLines:function(context) {
-		for(var li in this.lines) {
-			var line = this.lines[li];
-			context.lineTo(line.end.x, line.end.y);
+		if(this.lines.length >= 2) {
+			for(var li in this.lines) {
+				var line = this.lines[li];
+				context.lineTo(line.end.x, line.end.y);
+			}
+			context.stroke();
 		}
-		context.stroke();
 	},
 
 	drawDottedLines:function(context) {
