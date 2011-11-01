@@ -68,6 +68,7 @@ function initWelcomeScreenConfig() {
 	}).bind(devDerbyLogo);
 	var ela1 = new Elastic(50, new GPoint(200, 0), devDerbyLogo);
 	ela1.isStable = function() { return false; };
+	ela1.drawInContext = function(context) {};
 	welcomePensConfig.push(ela1);
 
 	var tomImage = new Image();
@@ -80,6 +81,7 @@ function initWelcomeScreenConfig() {
 	}).bind(tomLogo);
 	var ela2 = new Elastic(50, new GPoint(500, 0), tomLogo);
 	ela2.isStable = function() { return false; };
+	ela2.drawInContext = function(context) {};
 	welcomePensConfig.push(ela2);
 
 	var penColor = "#4D90FE";
@@ -106,8 +108,9 @@ function initWelcomeScreenConfig() {
 		var x = this.position.x - Math.floor(elaImage.width/2);
 		context.drawImage(elaImage, x, this.position.y);
 	}).bind(elaLogo);
-	var ela3 = new Elastic(60, new GPoint(350, 200), elaLogo);
+	var ela3 = new Elastic(100, new GPoint(350, 160), elaLogo);
 	ela3.isStable = function() { return false; };
+	ela3.drawInContext = function(context) {};
 	welcomePensConfig.push(ela3);
 	
 	var startX = 350;
