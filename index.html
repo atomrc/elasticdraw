@@ -1,0 +1,33 @@
+<html>
+	<head>	
+		<link rel="stylesheet" type="text/css" href="style/style.css" media="screen"/>
+		<script type="text/javascript" src="js/general.js"></script>
+		<script type="text/javascript" src="js/jscolor/jscolor.js"></script>
+		<title>
+		</title>
+	</head>
+	<body>
+		<div id="mainContainer">
+			<div id="configPanelDiv">
+			</div>
+			<div id="animationDiv">
+				<canvas id="drawingCanvas" height="700px" width="700px">
+				</canvas>
+				<canvas id="penCanvas" height="700px" width="700px">
+				</canvas>
+				<div id="addingInfos">
+				</div>
+				<canvas id="mainMenuCanvas" height="700px" width="700px">
+				</canvas>
+				<canvas id="addingCanvas" height="700px" width="700px">
+				</canvas>
+				<div id="mainMenu">
+					<p>and</p>
+					<button id="startButton" onclick="statesController.setAddPenState();">Start new draw</button>
+				</div>
+
+			</div>
+			<button id="exportButton" onclick="animationController.exportImage()">Export Image</button>
+		</div>
+	</body>
+</html>

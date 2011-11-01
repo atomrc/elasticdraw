@@ -1,0 +1,87 @@
+body, .hidingPanel{
+	background:black;
+}
+#mainContainer {
+	margin:auto;
+	width:700px;
+}
+
+button {
+	border: 1px solid #3079ED;
+	background-color: #4D90FE;
+	font-size:20pt;
+	color:white;
+	cursor:pointer;
+}
+button:hover {
+	background-color:#3079ED;
+}
+
+button#startButton {
+	position:relative;
+	top:300px;
+}
+
+#animationDiv {
+	position:relative;
+	margin:auto;
+	background:white;
+}
+#mainMenu, #mainMenuCanvas,  #addingInfos, #penCanvas, #addingCanvas {
+	position:absolute;
+	top:0;
+	left:0;
+}
+
+#mainMenu, #mainMenuCanvas,  #animationDiv, #addingInfos, #penCanvas, #addingCanvas {
+	height:700px;
+	width:700px;
+}
+
+#addingInfos {
+	background:rgba(0, 0, 0, 0.4);
+	color:white;
+}
+
+#mainMenu, #addingInfos {
+	display:none;
+	text-align:center;
+	font-family:"Arial";
+	font-size:20pt;
+}
+
+#mainMenu p:first-child {
+	padding-top:70px;
+}
+
+.hidingPanel {
+	position:absolute;
+	width:100%;
+	height:100%;
+	-moz-transition-property:top;
+	-moz-transition-duration:1s;
+}
+.open {
+	top:-100%;
+}
+.close {
+	top:0;
+}
+#configPanelDiv {
+	background:white;
+	position:relative;
+	margin:10px 0;
+	padding:10px 0;
+}
+
+.continousOption, .dottedOption {
+	width:50px;
+}
+
+.continousOption {
+	background:url(../images/continuous.png) no-repeat;
+}
+
+.dottedOption {
+	background:url(../images/dotted.png) no-repeat;
+}
