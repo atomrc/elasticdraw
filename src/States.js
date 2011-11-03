@@ -152,7 +152,7 @@ AddPenState.prototype = {
 			if(this.state.updateParameters) {
 				this.state.updateParameters();
 			}
-			this.nextState();
+			this.nextState(event);
 		}
 	},
 
@@ -175,10 +175,13 @@ AddPenState.prototype = {
 		}
 	},
 
-	nextState:function() {
+	nextState:function(event) {
 		if(this.currentState < this.orderedStatesClasses.length) {
 			this.state = new this.orderedStatesClasses[this.currentState]();
 			this.state.elastic = this.elastic;
+			if(this.state.updateElasticAnchor) {
+				this.state.updateElasticAnchor(event);
+			}
 			this.state.controller = this;
 			this.state.printInformations(this.instructionsDiv);
 			this.currentState++;
@@ -250,6 +253,9 @@ ChooseAnchorState.prototype.onMouseMove = function(event, context) {
 	context.lineTo(x + cursorSize, y - cursorSize);
 	context.stroke();
 	context.restore();
+}
+ChooseAnchorState.prototype.updateElasticAnchor = function(event) {
+	this.elastic.start = new GPoint(event.layerX, event.layerY);
 }
 
 function ChooseSizeState() {
