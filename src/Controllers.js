@@ -222,6 +222,14 @@ ConfigPanelController.prototype = {
 		sub1.appendChild(this.colorInput);
 		sub2.appendChild(this.widthInput);
 		sub3.appendChild(this.lineInput);
+    
+    this.context.appendChild(document.createElement("br"));
+
+    var clearButton = document.createElement("button");
+    clearButton.onclick = drawingController.clear.bind(drawingController);
+    clearButton.innerHTML = "Clear the canvas";
+    clearButton.className = "clearButton";
+    this.context.appendChild(clearButton);
 	},
 
 	//create a new sub panel. The sub panel is automatically added to the context 

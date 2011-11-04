@@ -115,3 +115,7 @@ button#startButton {
 .dottedOption {
 	background:url(../images/dotted.png) no-repeat;
 }
+.clearButton {
+  font-size:10pt;
+
+}
